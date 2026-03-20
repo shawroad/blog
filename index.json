@@ -1,0 +1,52 @@
+[
+  {
+    "filename": "2026-03-18-rust-cli-rewrite.md",
+    "title": "用 Rust 重写我的 CLI 工具：性能提升 10x 的实战记录",
+    "date": "2026-03-18",
+    "tag": "Rust",
+    "emoji": "🦀",
+    "cover": "cover-1",
+    "excerpt": "从 Python 迁移到 Rust 的完整心路历程，涵盖所有权系统的理解、异步并发的实践，以及令人吃惊的性能数字。",
+    "readTime": "3 min"
+  },
+  {
+    "filename": "2026-03-10-react-performance.md",
+    "title": "构建高性能 React 应用：从 Re-render 地狱逃出来",
+    "date": "2026-03-10",
+    "tag": "React",
+    "emoji": "⚛️",
+    "cover": "cover-2",
+    "excerpt": "深入分析 React 渲染机制，用 memo、useMemo、useCallback 和 Profiler 系统性解决性能瓶颈。",
+    "readTime": "3 min"
+  },
+  {
+    "filename": "2026-02-28-docker-k8s-guide.md",
+    "title": "Docker + K8s 从零到生产环境：一篇过于详细的指南",
+    "date": "2026-02-28",
+    "tag": "DevOps",
+    "emoji": "🐳",
+    "cover": "cover-3",
+    "excerpt": "手把手搭建容器化部署流水线，包括 Dockerfile 优化、K8s 资源配置、滚动更新和健康检查。",
+    "readTime": "2 min"
+  },
+  {
+    "filename": "2026-01-30-typescript-advanced-types.md",
+    "title": "TypeScript 高级类型体操：让类型系统为你工作",
+    "date": "2026-01-30",
+    "tag": "TypeScript",
+    "emoji": "🔷",
+    "cover": "cover-5",
+    "excerpt": "条件类型、映射类型、模板字符串类型……TypeScript 的类型系统远比你想象的强大。",
+    "readTime": "1 min"
+  },
+  {
+    "filename": "2026-01-15-productivity-tools-2026.md",
+    "title": "我的效率工具箱 2026：那些真正改变工作方式的工具",
+    "date": "2026-01-15",
+    "tag": "效率",
+    "emoji": "🛠️",
+    "cover": "cover-6",
+    "excerpt": "终端、编辑器、笔记、自动化……精选 20 个让我每天少浪费 1 小时的工具，附配置。",
+    "readTime": "3 min"
+  }
+]
