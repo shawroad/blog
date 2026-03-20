@@ -1,0 +1,102 @@
+name: Build & Deploy Blog
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write      # 需要写入 index.json
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # ── 自动扫描 posts/ 目录，生成 index.json ──────────────────
+      - name: Generate posts/index.json
+        run: |
+          node - << 'EOF'
+          const fs   = require('fs');
+          const path = require('path');
+
+          const postsDir = path.join(process.cwd(), 'posts');
+          const files    = fs.readdirSync(postsDir)
+                             .filter(f => f.endsWith('.md'))
+                             .sort()
+                             .reverse();   // 最新的排最前
+
+          const posts = files.map(filename => {
+            const raw  = fs.readFileSync(path.join(postsDir, filename), 'utf8');
+
+            // 解析 Front Matter（--- ... ---）
+            const fmMatch = raw.match(/^---\r?\n([\s\S]*?)\r?\n---/);
+            const meta    = {};
+            if (fmMatch) {
+              fmMatch[1].split('\n').forEach(line => {
+                const [key, ...rest] = line.split(':');
+                if (key && rest.length) {
+                  meta[key.trim()] = rest.join(':').trim();
+                }
+              });
+            }
+
+            // 自动计算阅读时间（按 300 字/分钟）
+            const body      = raw.replace(/^---[\s\S]*?---/, '').trim();
+            const wordCount = body.replace(/```[\s\S]*?```/g, '').length;
+            const readTime  = Math.max(1, Math.ceil(wordCount / 300));
+
+            return {
+              filename,
+              title:    meta.title    || filename,
+              date:     meta.date     || '',
+              tag:      meta.tag      || '未分类',
+              emoji:    meta.emoji    || '📝',
+              cover:    meta.cover    || 'cover-1',
+              excerpt:  meta.excerpt  || body.slice(0, 120).replace(/[#*`]/g, '') + '…',
+              readTime: `${readTime} min`,
+            };
+          });
+
+          fs.writeFileSync(
+            path.join(postsDir, 'index.json'),
+            JSON.stringify(posts, null, 2),
+            'utf8'
+          );
+
+          console.log(`✅ Generated index.json with ${posts.length} posts`);
+          EOF
+
+      # ── 把生成的 index.json 提交回仓库 ────────────────────────
+      - name: Commit index.json
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add posts/index.json
+          git diff --staged --quiet || git commit -m "chore: regenerate posts/index.json [skip ci]"
+          git push
+
+      # ── 部署到 GitHub Pages ────────────────────────────────────
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: '.'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
