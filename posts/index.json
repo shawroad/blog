@@ -1,15 +1,5 @@
 [
   {
-    "filename": "README.md",
-    "title": "README.md",
-    "date": "",
-    "tag": "未分类",
-    "emoji": "📝",
-    "cover": "cover-1",
-    "excerpt": " CYBER·BLOG\n\n一个科技感暗黑风格的个人博客，纯静态实现，无需构建工具。\n\n ✨ 功能特性\n\n- 🌑 科技感暗黑主题（霓虹光效 + 赛博朋克配色）\n- 📝 首页 + 文章列表 + 文章详情（动态加载 Markdown）\n…",
-    "readTime": "5 min"
-  },
-  {
     "filename": "2026-03-18-rust-cli-rewrite.md",
     "title": "用 Rust 重写我的 CLI 工具：性能提升 10x 的实战记录",
     "date": "2026-03-18",
